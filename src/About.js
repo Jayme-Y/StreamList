@@ -9,7 +9,10 @@ function About() {
       <p></p>
 
       <div className='home-button'>
-        <Link to="/"><button>Home</button></Link>
+        <Link to="/" className="home-link-button">
+          <span className="material-icons">home</span>
+          Home
+        </Link>
       </div>
     </div>
   );

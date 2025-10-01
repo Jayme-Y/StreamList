@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Monoton&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Outlined');
 
 .app-background {
   min-height: 100vh;
@@ -13,6 +15,8 @@
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   padding: 32px;
+
+  font-family: Arial, sans-serif;
 }
 
 .app-header {
@@ -24,12 +28,13 @@
 }
 
 .app-logo {
-  height: 50px;
+  height: 80px;
   margin-right: 16px;
   position: absolute;
   left: 0;
   top: 50%;
   transform: translateY(-50%);
+
 }
 
 .app-title {
@@ -56,20 +61,25 @@
   font-size: 20px;
   color: #000000;
   margin-bottom: 32px;
-  font-family: Arial, sans-serif;
 }
 
 .app-trending {
   text-align: left;
-  font-size: 20px;   
-  color: #000000;    
-  margin-bottom: 32px; 
-  font-weight: bold; 
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 30px;
+  color: #bd1e1e;
+  margin-bottom: 24px;
+  font-weight: bold;
+  padding-left: 100px;
 }
 
 .search-form {
-  text-align: center;
-  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 5px;
 }
 
 .search-form input {
@@ -95,7 +105,6 @@
   background-color: #37626f;
   color: #ffffff;
   cursor: pointer;
-  
 }
 
 .search-form button:hover {
@@ -109,36 +118,96 @@
   margin-bottom: 16px;
 }
 
-.nav-buttons button {
+.nav-link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #37626f;
+  color: #ffffff;
+  text-decoration: none;
   padding: 8px 40px;
-  border: none;
-  background: #37626f;
-  color: #fff;
   border-radius: 4px;
+  font-size: 16px;
+  font-family: inherit;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.nav-buttons button:hover {
-  background: #0a364a;
+.nav-link-button:hover {
+  background-color: #0a364a;
 }
 
-.app-trending {
-  text-align: left;
-    white-space: nowrap;
-  text-overflow: ellipsis;
-    overflow: hidden;
-  font-size: 30px;
-  color: #bd1e1e;
-  margin-bottom: 24px;
-  font-weight: bold;
-  padding-left: 100px;
+.nav-link-button .material-icons {
+  font-size: 18px;
 }
 
-.home-button button {
-  padding: 8px 10px;
-  border: none;
-  background: #37626f;
-  color: #fff;
+.home-link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #37626f;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 8px 20px;
   border-radius: 4px;
+  font-size: 16px;
+  font-family: inherit;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.home-link-button:hover {
+  background-color: #0a364a;
+}
+
+.item-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.item-list li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 400px; 
+  margin-bottom: 10px;
+  background: #faf0b8;
+  padding: 10px 10px;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.item-text {
+  font-size: 16px;
+  font-family: inherit;
+}
+
+.search-results {
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 10px;
+  display: inline-block; 
+  text-align: center;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.material-icons {
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+.material-icons-outlined {
+  font-size: 18px;
+  vertical-align: middle;
 }

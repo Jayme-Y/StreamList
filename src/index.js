@@ -7,7 +7,7 @@ import StreamList from './StreamList';
 import Movies from './Movies';
 import About from './About';
 import Cart from './Cart';
-import logo from './Extech.png';
+import logo from './eztech.png';
 import './index.css';
 
 // Main application render, app background and container, and render routes
@@ -18,7 +18,6 @@ root.render(
       <div className="app-background">
         <div className="app-container">
           <div className="app-header">
-            // App logo and title
             <img src={logo} alt="Logo" className="app-logo" />
             <span className="app-title">StreamList</span>
           </div>
