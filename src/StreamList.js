@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './App.css';
 
 const moviePosters = [
@@ -11,67 +11,74 @@ const moviePosters = [
   'https://www.movieposters.com/cdn/shop/files/tenet_topbsizl_600x.jpg?v=1698433999',
 ];
 
-// Main StreamList component
 function StreamList() {
-  // State for search input and movie reel index
   const [input, setInput] = useState('');
-  const [items, setItems] = useState([]);
+  const [searchHistory, setSearchHistory] = useState(() => {
+    const saved = localStorage.getItem('sharedSearchHistory');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [startIndex, setStartIndex] = useState(0);
+  const navigate = useNavigate();
 
-  // Auto-scroll movie reel every 5 seconds
+  // movie reel auto scroll
   useEffect(() => {
     const interval = setInterval(() => {
-      setStartIndex(prev => (prev + 1) % moviePosters.length);
+      setStartIndex((prev) => (prev + 1) % moviePosters.length);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  // Handlers for search input
-  const handleChange = (e) => setInput(e.target.value);
+  // save search history
+  useEffect(() => {
+    localStorage.setItem('sharedSearchHistory', JSON.stringify(searchHistory));
+  }, [searchHistory]);
 
+  // submit search
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (input.trim() === '') return;
-    setItems(prev => [...prev, { text: input }]);
-    console.log(input);
+    if (!input.trim()) return;
+
+    const newHistory = [...searchHistory, { text: input }];
+    setSearchHistory(newHistory);
+
+    navigate(`/movies?query=${encodeURIComponent(input)}`);
     setInput('');
   };
 
+  // edit search history
+  const handleEdit = (index) => {
+    const newText = prompt('Edit search:', searchHistory[index].text);
+    if (!newText) return;
+
+    const updated = searchHistory.map((item, i) => (i === index ? { text: newText } : item));
+    setSearchHistory(updated);
+    navigate(`/movies?query=${encodeURIComponent(newText)}`);
+    setInput(newText);
+  };
+
+  // delete search history
   const handleDelete = (index) => {
-    setItems(prev => prev.filter((_, i) => i !== index));
+    const updated = searchHistory.filter((_, i) => i !== index);
+    setSearchHistory(updated);
   };
 
-  const handleComplete = (index) => {
-    setItems(prev => prev.filter((_, i) => i !== index));
-  };
-
-  const handleEdit = (index, newValue) => {
-    setItems(prev => prev.map((item, i) => (i === index ? { text: newValue } : item)));
-  };
-
-  // How many posters to show in the reel
+  // get visible posters
   const visiblePosters = [];
   for (let i = 0; i < 4; i++) {
     visiblePosters.push(moviePosters[(startIndex + i) % moviePosters.length]);
   }
 
-  // Search form, navigation buttons, and movie reel
   return (
     <div className="app-container">
       <div className="nav-buttons">
         <Link to="/movies" className="nav-link-button">
-          <span className="material-icons-outlined">movie</span>
-          Movies
+          <span className="material-icons-outlined">movie</span> Movies
         </Link>
-
         <Link to="/about" className="nav-link-button">
-          <span className="material-icons-outlined">info</span>
-          About
+          <span className="material-icons-outlined">info</span> About
         </Link>
-
         <Link to="/cart" className="nav-link-button">
-          <span className="material-icons">shopping_cart</span>
-          Cart
+          <span className="material-icons">shopping_cart</span> Cart
         </Link>
       </div>
 
@@ -79,7 +86,7 @@ function StreamList() {
         <input
           type="text"
           value={input}
-          onChange={handleChange}
+          onChange={(e) => setInput(e.target.value)}
           placeholder="Type here to search..."
         />
         <button type="submit">
@@ -87,35 +94,25 @@ function StreamList() {
         </button>
       </form>
 
-      <div className="results">
-        <ul className="item-list">
-          {items.map((item, index) => (
-            <li key={index} className="item">
-              <span className="item-text">{item.text}</span>
-              <button onClick={() => handleComplete(index)}>Complete</button>
-              <button onClick={() => handleDelete(index)}>Delete</button>
-              <button
-                onClick={() =>
-                  handleEdit(index, prompt('Edit item:', item.text))
-                }
-              >
-                Edit
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {searchHistory.length > 0 && (
+        <div className="search-history">
+          <h3>Previous Searches</h3>
+          <ul className="item-list">
+            {searchHistory.map((item, index) => (
+              <li key={index} className="item">
+                <span className="item-text">{item.text}</span>
+                <button onClick={() => handleEdit(index)}>Edit</button>
+                <button onClick={() => handleDelete(index)}>Delete</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <p className="app-trending">Trending Today</p>
-
       <div className="movie-reel">
         {visiblePosters.map((src, idx) => (
-          <img
-            key={idx}
-            src={src}
-            alt={`Movie ${idx + 1}`}
-            className="movie-cover"
-          />
+          <img key={idx} src={src} alt={`Movie ${idx + 1}`} className="movie-cover" />
         ))}
       </div>
     </div>
